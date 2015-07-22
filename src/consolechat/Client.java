@@ -17,13 +17,35 @@ import java.util.logging.Logger;
 public class Client {
 	protected String name;
 	protected String host;
+	protected volatile static boolean isConnected = false;
 	public Client(String name,String host) {
 		this.name = name;
 		this.host = host;
 	}
 	public void start() {
 		try {
+			Thread t = new Thread(new Runnable() {
+
+				@Override
+				public void run() {
+					while (!Client.isConnected) {
+						try {
+							System.out.print("\rConnecting .  ");
+							Thread.sleep(500);
+							System.out.print("\rConnecting .. ");
+							Thread.sleep(500);
+							System.out.print("\rConnecting ...");
+							Thread.sleep(500);
+						} catch (InterruptedException ex) {
+							Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+						}
+					}
+				}
+			});
+			t.start();
 			Socket socket = new Socket(this.host, 3000);
+			Client.isConnected = true;
+			System.out.println("Successfully connected.");
 			Listener listener = new Listener(socket);
 			Speaker speaker = new Speaker(socket, this.name);
 			listener.start();
