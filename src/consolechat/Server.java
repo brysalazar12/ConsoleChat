@@ -57,6 +57,7 @@ public class Server {
                             Socket client = Server.serverSocket.accept();
 							BufferedReader reader = new BufferedReader(new InputStreamReader(client.getInputStream()));
 							String line = reader.readLine();
+							System.out.println(line + " is connected. ip:" + client.getInetAddress().toString());
 							for(Socket sock : socketList) {
 								PrintWriter writer = new PrintWriter(sock.getOutputStream());
 								writer.println(line + " is connected");
@@ -64,6 +65,7 @@ public class Server {
 							}
 							socketList.add(client);
 							Worker worker = new Worker(client,socketList);
+							worker.setIpAddress(client.getInetAddress().toString());
 							worker.setClientName(line);
 							worker.start();
 							workerList.add(worker);
@@ -83,6 +85,7 @@ public class Server {
         private final Socket client;
         private final ArrayList<Socket> socketList;
 		private String name;
+		private String ipAddress;
 
 		public Worker(Socket client, ArrayList<Socket> socketList) {
             this.socketList = socketList;
@@ -93,12 +96,18 @@ public class Server {
 			this.name = name;
 		}
 
+		public void setIpAddress(String ip)
+		{
+			this.ipAddress = ip;
+		}
+
         @Override
         public void run() {
             String line;
             try {
                 BufferedReader reader = new BufferedReader(new InputStreamReader(this.client.getInputStream()));
                 while((line = reader.readLine()) != null) {
+					System.out.println("from " + this.name + ": " + line);
 					for (Socket socketList1 : socketList) {
 						// broadcast to all socket except the one who send the message
 						if (socketList1.getInetAddress() != this.client.getInetAddress()) {
@@ -110,6 +119,7 @@ public class Server {
                 }
             } catch (IOException e) {
 //                e.printStackTrace();
+				System.out.println(this.name + " is disconnected. ip:" + this.ipAddress);
 				for(Socket socket : socketList) {
 					try {
 						PrintWriter writer = new PrintWriter(socket.getOutputStream());
