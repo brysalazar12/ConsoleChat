@@ -30,12 +30,22 @@ public class Client {
 				public void run() {
 					while (!Client.isConnected) {
 						try {
-							System.out.print("\rConnecting .  ");
-							Thread.sleep(500);
-							System.out.print("\rConnecting .. ");
-							Thread.sleep(500);
-							System.out.print("\rConnecting ...");
-							Thread.sleep(500);
+							if(!Client.isConnected) {
+								System.out.print("\rConnecting    ");
+								Thread.sleep(500);
+							}
+							if(!Client.isConnected) {
+								System.out.print("\rConnecting .  ");
+								Thread.sleep(500);
+							}
+							if(!Client.isConnected) {
+								System.out.print("\rConnecting .. ");
+								Thread.sleep(500);
+							}
+							if(!Client.isConnected) {
+								System.out.print("\rConnecting ...");
+								Thread.sleep(500);
+							}
 						} catch (InterruptedException ex) {
 							Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
 						}
@@ -45,12 +55,14 @@ public class Client {
 			t.start();
 			Socket socket = new Socket(this.host, 3000);
 			Client.isConnected = true;
+			System.out.println("");
 			System.out.println("Successfully connected.");
 			Listener listener = new Listener(socket);
 			Speaker speaker = new Speaker(socket, this.name);
 			listener.start();
 			speaker.start();
 		} catch (IOException ex) {
+			Client.isConnected = true;
 			Logger.getLogger(Client1.class.getName()).log(Level.SEVERE, null, ex);
 		}
 	}
