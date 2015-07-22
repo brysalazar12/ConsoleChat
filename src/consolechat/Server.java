@@ -109,9 +109,9 @@ public class Server {
                 while((line = reader.readLine()) != null) {
 					System.out.println("from " + line);
 					if(line.contains("ping")) {
-						PrintWriter writer = new PrintWriter(this.client.getOutputStream());
-						writer.println("server: hello");
-						writer.flush();
+						PrintWriter writer2 = new PrintWriter(this.client.getOutputStream());
+						writer2.println("server: hello");
+						writer2.flush();
 						continue;
 					}
 					
