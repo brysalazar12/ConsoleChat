@@ -34,7 +34,7 @@ public class Speaker extends Thread {
 			writer.flush();
 			while(true) {
 				Scanner sc = new Scanner(System.in);
-				writer.println(this.name + ": "+sc.nextLine());
+				writer.println(this.name + ": " + sc.nextLine());
 				writer.flush();
 			}
 		} catch (IOException ex) {

@@ -107,7 +107,14 @@ public class Server {
             try {
                 BufferedReader reader = new BufferedReader(new InputStreamReader(this.client.getInputStream()));
                 while((line = reader.readLine()) != null) {
-					System.out.println("from " + this.name + ": " + line);
+					System.out.println("from " + line);
+					if(line.contains("ping")) {
+						PrintWriter writer = new PrintWriter(this.client.getOutputStream());
+						writer.println("server: hello");
+						writer.flush();
+						continue;
+					}
+					
 					for (Socket socketList1 : socketList) {
 						// broadcast to all socket except the one who send the message
 						if (socketList1.getInetAddress() != this.client.getInetAddress()) {
