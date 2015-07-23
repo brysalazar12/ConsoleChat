@@ -15,6 +15,7 @@ import java.util.logging.Logger;
  * @author Admin
  */
 public class ConsoleChat {
+	public final static int port = 80;
 
 	/**
 	 * @param args the command line arguments
@@ -33,10 +34,10 @@ public class ConsoleChat {
 				System.out.print("Please Enter host:");
 				sc = new Scanner(System.in);
 				String host = sc.nextLine();
-				Client client = new Client(name,host);
+				Client client = new Client(name, host, ConsoleChat.port);
 				client.start();
 			} else if(args[0].equals("server")) {
-				Server server = new Server(3000);
+				Server server = new Server(ConsoleChat.port);
 				server.run();
 			}
 		} else {

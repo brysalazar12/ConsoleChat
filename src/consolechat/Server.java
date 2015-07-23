@@ -46,6 +46,7 @@ public class Server {
 
     public void run() {
         try {
+			System.out.println("listening to port: " + this.port);
             Server.serverSocket = new ServerSocket(this.port);
 
             // listen for client to connect

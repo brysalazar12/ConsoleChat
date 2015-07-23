@@ -18,9 +18,12 @@ public class Client {
 	protected String name;
 	protected String host;
 	protected volatile static boolean isConnected = false;
-	public Client(String name,String host) {
+	protected final int port;
+	
+	public Client(String name,String host, int port) {
 		this.name = name;
 		this.host = host;
+		this.port = port;
 	}
 	public void start() {
 		try {
@@ -53,7 +56,8 @@ public class Client {
 				}
 			});
 			t.start();
-			Socket socket = new Socket(this.host, 3000);
+			System.out.println("Port: " + this.port);
+			Socket socket = new Socket(this.host, this.port);
 			Client.isConnected = true;
 			System.out.println("");
 			System.out.println("Successfully connected.");
@@ -63,7 +67,7 @@ public class Client {
 			speaker.start();
 		} catch (IOException ex) {
 			Client.isConnected = true;
-			Logger.getLogger(Client1.class.getName()).log(Level.SEVERE, null, ex);
+//			Logger.getLogger(Client1.class.getName()).log(Level.SEVERE, null, ex);
 		}
 	}
 }
